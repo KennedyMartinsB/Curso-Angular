@@ -1,5 +1,5 @@
 {
-  "name": "calculadora",
+  "name": "gerenciador-de-tarefas",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

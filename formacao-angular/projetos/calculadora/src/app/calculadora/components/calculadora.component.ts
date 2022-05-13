@@ -1,15 +1,96 @@
 import { Component, OnInit } from '@angular/core';
+import { CalculadoraService } from '../services/calculadora.service';
 
 @Component({
   selector: 'app-calculadora',
-  template: './calculadora.component.html',
+  templateUrl: './calculadora.component.html',
   styleUrls: ['./calculadora.component.css']
 })
 export class CalculadoraComponent implements OnInit {
 
-  constructor() { }
+  private numero1: string;
+  private numero2: string;
+  private resultado: number;
+  private operacao: string;
 
-  ngOnInit(): void {
+  constructor(private calculadoraService: CalculadoraService) { }
+
+  ngOnInit() {
+    this.limpar();
   }
+
+  limpar(): void {
+    this.numero1 = '0';
+    this.numero2 = null;
+    this.resultado = null;
+    this.operacao = null;
+  }
+
+  adicionarNumero(numero: string): void {
+    if (this.operacao === null) {
+      this.numero1 = this.concatenarNumero(this.numero1, numero);
+    } else{
+      this.numero2 = this.concatenarNumero(this.numero2, numero);
+    }
+  }
+
+  concatenarNumero(numAtua: string, numConcat: string): string{
+    if(numAtua === '0' || numAtua === null){
+      numAtua = '';
+    }
+
+    if(numConcat === '.' && numAtua === ''){
+      return '0.';
+    }
+
+    if(numConcat === '.' && numAtua.indexOf('.') > -1){
+      return numAtua;
+    }
+
+    return numAtua + numConcat;
+  }
+
+  definirOperacao(operacao: string): void {
+    // apenas define a operação caso não exista uma
+  	if (this.operacao === null) {
+      this.operacao = operacao;
+      return;
+  	}
+
+    /* caso operação definida e número 2 selecionado,
+       efetua o cálculo da operação */
+  	if (this.numero2 !== null) {
+  		this.resultado = this.calculadoraService.calcular(
+  			parseFloat(this.numero1), 
+  			parseFloat(this.numero2), 
+  			this.operacao);
+  		this.operacao = operacao;
+  		this.numero1 = this.resultado.toString();
+  		this.numero2 = null;
+  		this.resultado = null;
+  	}
+  }
+
+  calcular(): void {
+  	if (this.numero2 === null) {
+  		return;
+  	}
+
+  	this.resultado = this.calculadoraService.calcular(
+  		parseFloat(this.numero1), 
+  		parseFloat(this.numero2), 
+  		this.operacao);
+  }
+
+  get display(): string {
+  	if (this.resultado !== null) {
+  		return this.resultado.toString();
+  	}
+  	if (this.numero2 !== null) {
+  		return this.numero2;
+  	}
+  	return this.numero1;
+  }
+
 
 }

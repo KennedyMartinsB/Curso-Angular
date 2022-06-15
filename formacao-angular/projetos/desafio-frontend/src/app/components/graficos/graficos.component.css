@@ -1,0 +1,27 @@
+.line-chart{
+    height: 200px !important;
+}
+
+
+.chart-card{
+    width: 35%;
+    height: 35vh;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 10px 10px 16px 1px rgba(0, 0, 0, 0.538);
+    margin: auto;
+    margin-top: 3%;
+}
+
+.card-nav{
+    display: flex;
+    
+}
+
+.rounded{
+    border-radius: 50% !important;
+}
+
+.line-chart{
+    width: 100%;
+}
